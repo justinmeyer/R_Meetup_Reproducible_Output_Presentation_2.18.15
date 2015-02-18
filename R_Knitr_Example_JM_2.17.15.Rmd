@@ -1,0 +1,100 @@
+---
+title: "An Knitr Example Using Warpbreaks Data"
+author: "Justin Meyer"
+date: "February 17, 2015"
+output: pdf_document
+---
+
+To make a knitr file go to File then New File then R Markdown...
+
+RStudio will ask you to install some necessary packages.
+
+RStudio can turn this code into an HTML file, a PDF, or a Word doc.
+A PDF requires that you have TeX installed. MikTex is recommended for Windows.
+A Word doc requires that you have Word installed.
+
+The above text will show up in the output document just as it appears here.
+
+You can use Markdown to add formatting to the text. There is example markdown at
+[http://daringfireball.net/projects/markdown/syntax](http://daringfireball.net/projects/markdown/syntax).
+
+Here are some bullets:  
+- Note 1  
+- Note 2
+
+We can also add a pagebreak. Note that pagebreak is done with LaTeX.
+Some LaTeX works and some doesn't.
+
+\pagebreak
+
+# This Page has an H1 Header
+
+The following is some R code that will run. echo = FALSE hides the R code so only
+the output is shown
+
+### Here is the Table
+
+```{r, echo = FALSE}
+
+# Everything inside ```{r} is R code. Everything that is outside is Markdown.
+
+###############################
+# Set some global options for R
+###############################
+
+# Sometimes you might want to set global R options to hide warning messages
+# You can do this with
+# options(warn=-1)
+
+# There are other options like
+# options(width = 100)
+
+##############################################
+# Make a table summarizing the warpbreaks data
+##############################################
+
+# Get data
+data(warpbreaks)
+
+# Load the data.table package
+library(data.table)
+
+# Create an object that data.table can use
+temp <- data.table(warpbreaks)
+
+# Aggregate using data.table
+results <- as.data.frame(temp[, list(
+  average_breaks = mean(breaks),
+  samples = length(breaks)),
+  by = list(wool, tension)])
+rm(temp)
+
+# Change the names of the fields in the table so they look good
+setnames(results, old = c("wool", "tension", "average_breaks", "samples"), 
+         new = c("Wool", "Tension", "Average Breaks", "Number of Samples"))
+
+# Print the table
+# row.names = FALSE hides the table row names
+library(knitr)
+kable(results, row.names = FALSE)
+
+```
+
+\newpage
+
+# A Chart Summarizing the Warpbreaks Data
+
+```{r, echo = FALSE}
+
+# Make a boxplot
+boxplot(breaks ~ tension, data = warpbreaks, main = "Warpbreaks Data", 
+    xlab = "Tension", ylab = "Breaks")
+
+```
+
+Add inline R code like this:
+
+There are `r prettyNum(nrow(warpbreaks) ^3, big.mark = ",")` rows cubed in the warpbreaks dataset.
+
+prettyNum isn't necessary but it adds commas that improve readability.
+

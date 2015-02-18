@@ -1,0 +1,151 @@
+\documentclass{article}
+\usepackage{parskip} % This is a comment in LaTeX. This line prevents LaTeX from
+% indenting text. You can also use \noindent for just one line.
+\usepackage{hyperref} % Lets LaTeX include hyperlinks.
+
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\title{A LaTeX Example Using Warpbreaks Data}
+\author{Justin Meyer}
+\maketitle
+
+\begin{abstract}
+This is an abstract. This article is about warpbreaks data.
+\end{abstract}
+
+\newpage
+
+\section{This is a Section}
+
+RStudio can turn .Rnw code into a PDF. You must have TeX installed.
+MikTex is recommended for Windows.
+
+LaTeX resources:\\
+\url{http://www.stdout.org/~winston/latex/latexsheet.pdf}\\
+\url{http://en.wikibooks.org/wiki/LaTeX}\\
+\url{http://tex.stackexchange.com/}
+
+To make a LaTeX file go to File then New File then R Sweave. Make sure that the 
+file name does not have spaces.\\
+
+If you want to force a break to the next line you should include two backslashes, 
+like this.\\
+
+\paragraph{} paragraph starts a new paragraph.
+
+\paragraph{This is a paragraph title} This line includes an optional paragraph
+title.
+
+\subsection{This is a subsection}
+
+\subsubsection{This is a subsubsection}
+
+\subsection*{Another subsubsection}
+This subsubsection has the numbering suppressed.\\
+
+\textbf{Some bold text}
+
+\emph{Some italic text}
+
+You can use the Format button in RStudio to do some
+simple formatting.
+
+\newpage
+
+``Quotation marks in LaTeX are a little weird.''
+
+You can also control font size:\\
+\tiny tiny font\\
+\small small font\\
+\normalsize normal font\\
+\large large font\\
+\Huge huge font\\
+
+\normalsize Note that I had to reset the font size here. You can also apply styles to
+specific text using curly braces.\\
+
+\textsf{Sans serif text applied using curly braces}
+
+\texttt{Typewriter text}\\
+
+LaTeX can produce lists:
+
+\begin{itemize}
+  \item The below analysis is a look at the Warpbreaks data
+  \item Warpbreaks contains information on the number of breaks in thread
+  \item The data is grouped by wool and tension
+\end{itemize}
+
+\pagebreak
+
+\section{Tables!}
+
+With row names:\\
+<<r, echo=FALSE, results = tex>>=
+
+# Get data
+data(warpbreaks)
+
+# Load the data.table package
+library(data.table)
+
+# Create an object that data.table can use
+temp <- data.table(warpbreaks)
+
+# Aggregate using data.table
+results <- as.data.frame(temp[, list(
+  average_breaks = mean(breaks),
+  samples = length(breaks)),
+  by = list(wool, tension)])
+rm(temp)
+
+# Change the names of the fields in the table so they look good
+setnames(results, old = c("wool", "tension", "average_breaks", "samples"), 
+         new = c("Wool", "Tension", "Average Breaks", "Number of Samples"))
+
+# Print the table
+# row.names = FALSE hides the table row names
+# Use xtable for LaTeX, not kable
+library(xtable)
+# Print and include.rownames = FALSE hide the row names
+# If you don't mind rownames xtable(results) will work.
+print(xtable(results), include.rownames = FALSE)
+
+@
+
+Without row names:\\
+
+<<r, echo=FALSE, results = tex>>=
+
+xtable(results)
+
+@
+
+Notice how things didn't print in the order you expected? This is LaTex "helping"
+you. There are ways to control this but it is beyond the scope of this presentation.
+
+\pagebreak
+
+\section{A Chart!}
+
+Note that you can't use periods in the filename if you want to include a chart.
+
+<<label = fig2, fig = TRUE, echo = FALSE>>=
+# Make a boxplot
+boxplot(breaks ~ tension, data = warpbreaks, main = "Warpbreaks Data", 
+    xlab = "Tension", ylab = "Breaks")
+@
+
+\pagebreak
+
+\section{Inline R Code}
+
+Add inline R code with Sexpr:
+
+There are \Sexpr{prettyNum(nrow(warpbreaks) ^3, big.mark = ",")} rows cubed in the warpbreaks dataset.
+
+prettyNum isn't necessary but it adds commas that improve readability.
+
+\end{document}

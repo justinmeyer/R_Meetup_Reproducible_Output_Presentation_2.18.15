@@ -1,0 +1,177 @@
+RStudio Presentations Demo
+========================================================
+author: Justin Meyer
+date: 2/17/15
+
+To create a presentation select File then New File then
+R Presentation in RStudio.
+
+Important note: The .Rpres file you create must not have 
+spaces in the filename or charts will not appear in the
+presentation when viewed in RStudio.
+
+A Slide With Text
+========================================================
+
+For more details on authoring R presentations click the
+**Help** button on the toolbar.
+
+This Is a Slide With Bullets
+========================================================
+
+Use a dash to create bullets:
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+Slide With Code That IS Run
+========================================================
+
+Note that a summary is printed.
+
+```{r}
+
+summary(cars)
+
+```
+
+Slide With Code That IS NOT Run
+========================================================
+
+Note that a summary is not printed.
+
+```{r, eval = FALSE}
+
+summary(cars)
+
+```
+
+Slide With Plot
+========================================================
+
+This slide includes a plot and the R code that created
+it.
+
+```{r}
+
+plot(cars)
+
+```
+
+Slide With Plot Displaying Output Only
+========================================================
+
+This slide just shows the plot.
+
+```{r, echo = FALSE}
+
+plot(cars)
+
+```
+
+Markdown Formatting can be Used
+========================================================
+### This is Header 3 text  
+
+Strong emphasis, aka bold, is written with **asterisks** 
+or __underscores__.  
+
+[This is an inline-style link](http://www.rprogramming.net)
+
+Text With Inline R Code
+========================================================
+The average speed in the cars dataset is 
+`r mean(cars$speed)`. The longest distance is 
+**`r max(cars$dist)`.**
+
+Include an Image
+========================================================
+![example picture alternate text](Assets/example_picture.jpg)
+
+Or Include a Formula
+========================================================
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow>
+    <mi>x</mi>
+    <mo>=</mo>
+    <mfrac>
+      <mrow>
+        <mo>&#x2212;</mo>
+        <mi>b</mi>
+        <mo>&#xB1;</mo>
+        <msqrt>
+          <mrow>
+            <msup>
+              <mi>b</mi>
+              <mn>2</mn>
+            </msup>
+            <mo>&#x2212;</mo>
+            <mn>4</mn>
+            <mi>a</mi>
+            <mi>c</mi>
+          </mrow>
+        </msqrt>
+      </mrow>
+      <mrow>
+        <mn>2</mn>
+        <mi>a</mi>
+      </mrow>
+    </mfrac>
+  </mrow>
+</math>
+
+You Might Want Your Presentation to Open Some R Code
+========================================================
+source: Example_R_Code_For_Presenters_To_Open.R 3
+
+The 3 tells R to highlight the third line of code
+
+You Can Also Do This With REGEX
+========================================================
+source: Example_R_Code_For_Presenters_To_Open.R /MadR/
+
+/MadR/ tells R to highlight the first line of code 
+containing "MadR" in the source file
+
+Add Some Style
+========================================================
+transition: rotate
+
+... should cause the transition to this slide to be a
+rotation instead of a slide.
+
+Transition doesn't seem to work on individual slides 
+but does work when placed on the first slide.
+
+Add More Style
+========================================================
+type: alert
+
+You can also change the "type" of slide. There are four
+types:  
+alert (red)  
+prompt (blue)  
+section (different blue)  
+sub-section (grey)  
+
+Yet More Style
+========================================================
+incremental: true
+
+1. This
+2. Is
+3. An
+4. Incremental
+5. Display
+
+You Can Also Define Style With CSS
+========================================================
+
+Sorry, no demo of this. add css:custom.css to the first
+slide and add a custom.css file to the directory.
+
+Save Your Presentation as a Standalone HTML File
+========================================================
+
+Click More, then Save As Web Page...
